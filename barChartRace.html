@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Medieninformatik - Rennen</title>
+    <link rel="icon" type="image/vnd.microsoft.icon" href="./images/logo/favicon.ico">
+    <!-- External -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- LOCAL STUFF -->
+    <link rel="stylesheet" href="css/barChartRace.css">
+    <script src="./js/barChartRace.js"></script>
+
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+
+<body>
+    <div class="dashboardFull">
+        <div class="sidebar">
+            <div class="logo">
+                <a href="https://www.hs-bremen.de/" target="_blank">
+                    <img id="logoImage" src="./images/logo/logo.png" alt="" srcset="">
+                </a>
+            </div>
+            <div id="dashboardMenu" class="icon-text">
+                <i class="material-icons">home</i>
+                <p>Dashboard</p>
+            </div>
+            <div id="BarRaceMenu" class="icon-text  sidebar-active">
+                <i class="material-icons">flag</i>
+                <p>Daten-Rennen</p>
+            </div>
+            <div class="icon-text">
+                <i class="material-icons">home</i>
+                <p>Contact?</p>
+            </div>
+        </div>
+        <div class="barRaceFull">
+            <div class="countdown animate__animated animate__backInLeft">
+                GO!
+            </div>
+
+            <div class="barRaceContents">
+                <div class="headline">
+                    <h2 class="text-white">Datensätze im Wettrennen (Experimentelles Feature)</h2>
+                    <button type="button" class="btn btn-lg" onclick="startRun()">Rennen
+                        wiederholen</button>
+                </div>
+                <div class="barRaceCard">
+                    <div class="cardBody">
+                        <div id="barRace-chart"></div>
+                    </div>
+                    <div class="cardFooter text-black">
+                        <div class="legend-elements">
+                            <div class="legend-element">
+                                <span id="square" style="color: #001219">■</span>
+                                <div class="text-black">Allg. HZB</div>
+                            </div>
+                            <div class="legend-element">
+                                <span id="square" style="color: #005f73">■</span>
+                                <div class="text-black">FH-Reife</div>
+                            </div>
+                            <div class="legend-element">
+                                <span id="square" style="color: #0a9396">■</span>
+                                <div class="text-black">Beruflich Qualifizierte</div>
+                            </div>
+                            <div class="legend-element">
+                                <span id="square" style="color: #94d2bd">■</span>
+                                <div class="text-black">Ausl. HZB/Studienkolleg</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        startRun()
+        function startRun() {
+            $('button').blur();
+            $("#barRace-chart").html("");
+
+            var svgBarRace = d3.select("#barRace-chart").append("svg")
+                .attr("width", 960)
+                .attr("height", 600);
+
+            var tickDuration = 1200;
+
+            var top_n = 4;
+            var width = 960;
+            var height = 600;
+
+            const margin = {
+                top: 80,
+                right: 0,
+                bottom: 5,
+                left: 0
+            };
+
+            let barPadding = (height - (margin.bottom + margin.top)) / (top_n * 5);
+
+            let year = 2013;
+
+            d3.csv('./datenwerte_race.csv').then(function (data) {
+
+                var color = d3.scaleOrdinal()
+                    .range(['#001219', '#005f73', '#0a9396', '#94d2bd'])
+
+                data.forEach(d => {
+                    d.value = +d.value,
+                        d.lastValue = +d.lastValue,
+                        d.value = isNaN(d.value) ? 0 : d.value,
+                        d.year = +d.year,
+                        d.colour = d3.hsl(Math.random() * 360, 0.75, 0.75)
+                });
+
+                // Defining colours for the rects
+                data[0].colour = "#001219";
+                data[7].colour = " #005f73";
+                data[14].colour = "#0a9396";
+                data[21].colour = "#94d2bd";
+
+
+                let yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
+                    .sort((a, b) => b.value - a.value)
+                    .slice(0, top_n);
+
+                yearSlice.forEach((d, i) => d.rank = i);
+
+                console.log('yearSlice: ', yearSlice)
+
+                let x = d3.scaleLinear()
+                    .domain([0, d3.max(yearSlice, d => d.value)])
+                    .range([margin.left, width - margin.right - 65]);
+
+                let y = d3.scaleLinear()
+                    .domain([top_n, 0])
+                    .range([height - margin.bottom, margin.top]);
+
+                let xAxis = d3.axisTop()
+                    .scale(x)
+                    .ticks(width > 500 ? 5 : 2)
+                    .tickSize(-(height - margin.top - margin.bottom))
+                    .tickFormat(d => d3.format(',')(d));
+
+                svgBarRace.append('g')
+                    .attr('class', 'axis xAxis')
+                    .attr('transform', `translate(0, ${margin.top})`)
+                    .call(xAxis)
+                    .selectAll('.tick line')
+                    .classed('origin', d => d == 0);
+
+                svgBarRace.selectAll('rect.bar')
+                    .data(yearSlice, d => d.name)
+                    .enter()
+                    .append('rect')
+                    .attr('class', 'bar')
+                    .attr('x', x(0) + 1)
+                    .attr('width', d => x(d.value) - x(0) - 1)
+                    .attr('y', d => y(d.rank) + 5)
+                    .attr('height', y(1) - y(0) - barPadding)
+                    .style('fill', d => d.colour)
+
+
+                svgBarRace.selectAll('text.label')
+                    .data(yearSlice, d => d.name)
+                    .enter()
+                    .append('text')
+                    .attr('class', 'label')
+                    .attr('fill', 'white')
+                    .attr('x', d => x(d.value) - 8)
+                    .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1)
+                    .style('text-anchor', 'end')
+                    .html(d => d.name);
+
+                svgBarRace.selectAll('text.valueLabel')
+                    .data(yearSlice, d => d.name)
+                    .enter()
+                    .append('text')
+                    .attr('class', 'valueLabel')
+                    .attr('fill', 'white')
+                    .attr('x', d => x(d.value) + 5)
+                    .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1)
+                    .text(d => d3.format(',.0f')(d.lastValue));
+
+                let yearText = svgBarRace.append('text')
+                    .attr('class', 'yearText')
+                    .attr('x', width - 25)
+                    .attr('y', height - 25)
+                    .html(~~year)
+                    .style('text-anchor', 'end')
+                    .style('fill', '#ffffff')
+                    .style('stroke', '#000')
+                    .style('stroke-width', 2)
+                    .style('stroke-linejoin', 'round')
+                    .style('opacity', 1);
+
+                let ticker = d3.interval(e => {
+
+                    yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
+                        .sort((a, b) => b.value - a.value)
+                        .slice(0, top_n);
+
+                    yearSlice.forEach((d, i) => d.rank = i);
+
+
+                    x.domain([0, d3.max(yearSlice, d => d.value)]);
+
+                    svgBarRace.select('.xAxis')
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .call(xAxis);
+
+                    let bars = svgBarRace.selectAll('.bar').data(yearSlice, d => d.name);
+
+                    bars
+                        .enter()
+                        .append('rect')
+                        .attr('class', d => `bar ${d.name.replace(/\s/g, '_')}`)
+                        .attr('x', x(0) + 1)
+                        .attr('width', d => x(d.value) - x(0) - 1)
+                        .attr('y', d => y(top_n + 1) + 5)
+                        .attr('height', y(1) - y(0) - barPadding)
+                        .style('fill', d => d.colour)
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('y', d => y(d.rank) + 5);
+
+                    bars
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('width', d => x(d.value) - x(0) - 1)
+                        .attr('y', d => y(d.rank) + 5);
+
+                    bars
+                        .exit()
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('width', d => x(d.value) - x(0) - 1)
+                        .attr('y', d => y(top_n + 1) + 5)
+                        .remove();
+
+                    let labels = svgBarRace.selectAll('.label')
+                        .data(yearSlice, d => d.name);
+
+                    labels
+                        .enter()
+                        .append('text')
+                        .attr('class', 'label')
+                        .attr('x', d => x(d.value) - 8)
+                        .attr('y', d => y(top_n + 1) + 5 + ((y(1) - y(0)) / 2))
+                        .style('text-anchor', 'end')
+                        .html(d => d.name)
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1);
+
+
+                    labels
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('x', d => x(d.value) - 8)
+                        .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1);
+
+                    labels
+                        .exit()
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('x', d => x(d.value) - 8)
+                        .attr('y', d => y(top_n + 1) + 5)
+                        .remove();
+
+                    let valueLabels = svgBarRace.selectAll('.valueLabel').data(yearSlice, d => d.name);
+
+                    valueLabels
+                        .enter()
+                        .append('text')
+                        .attr('class', 'valueLabel')
+                        .attr('x', d => x(d.value) + 5)
+                        .attr('y', d => y(top_n + 1) + 5)
+                        .text(d => d3.format(',.0f')(d.lastValue))
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1);
+
+                    valueLabels
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('x', d => x(d.value) + 5)
+                        .attr('y', d => y(d.rank) + 5 + ((y(1) - y(0)) / 2) + 1)
+                        .tween("text", function (d) {
+                            let i = d3.interpolateRound(d.lastValue, d.value);
+                            return function (t) {
+                                this.textContent = d3.format(',')(i(t));
+                            };
+                        });
+
+                    valueLabels
+                        .exit()
+                        .transition()
+                        .duration(tickDuration)
+                        .ease(d3.easeLinear)
+                        .attr('x', d => x(d.value) + 5)
+                        .attr('y', d => y(top_n + 1) + 5)
+                        .remove();
+
+                    yearText.html(~~year);
+
+                    if (year == 2019) ticker.stop();
+                    year = d3.format('.1f')((+year) + 1);
+                }, tickDuration);
+
+            });
+        }
+
+    </script>
+</body>
