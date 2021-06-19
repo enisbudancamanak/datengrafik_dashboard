@@ -3,18 +3,18 @@ $(document).ready(function () {
     // exec the function for displaying the data with delay
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
-    }, 1600)
+    }, 4100)
 
     setTimeout(function () {
       changeDataPieChart(data2013)
-    }, 1900)
+    }, 4300)
 
     // INTRO ANIMATION
     anime({
       targets: '#introSVG path',
       strokeDashoffset: [anime.setDashoffset, 0],
       easing: 'cubicBezier(.5, .05, .1, .3)',
-      duration: 0, //2500
+      duration: 2500, //2500
       direction: 'alternate',
       loop: false,
       delay: 500,
@@ -25,8 +25,8 @@ $(document).ready(function () {
         anime({
           targets: '.intro',
           opacity: 0,
-          delay: 1500,
-          duration: 500,
+          delay: 1500, //1500
+          duration: 500, //500
           complete: function (anim) {
             $('.intro').css('visibility', 'hidden')
             $('#introSVG').css('visibility', 'hidden')
@@ -52,7 +52,7 @@ $(document).ready(function () {
     $(menuPoint.currentTarget).css('color', 'black')
   })
 
-  $('#BarRaceMenu').on('click', function () {
+  $('#barRaceMenu').on('click', function () {
     window.location.replace('barChartRace.html')
   })
 
@@ -164,13 +164,19 @@ $(document).ready(function () {
         beruflQualiAvg /= yearsDifference
         auslAvg /= yearsDifference
 
-        $('#overviewCard1').html(Math.round(allStudents) + ' Schüler')
-        $('#overviewCard2').html(Math.round(allgHzbAvg) + ' Schüler')
-        $('#overviewCard3').html(Math.round(fhReifeAvg) + ' Schüler')
-        $('#overviewCard4').html(
+        $('#overviewCard1Text').html(
+          Math.round(allStudents) + ' Schüler'
+        )
+        $('#overviewCard2Text').html(
+          Math.round(allgHzbAvg) + ' Schüler'
+        )
+        $('#overviewCard3Text').html(
+          Math.round(fhReifeAvg) + ' Schüler'
+        )
+        $('#overviewCard4Text').html(
           Math.round(beruflQualiAvg) + ' Schüler'
         )
-        $('#overviewCard5').html(Math.round(auslAvg) + ' Schüler')
+        $('#overviewCard5Text').html(Math.round(auslAvg) + ' Schüler')
       } else {
         $('#from').addClass('error-input')
         $('#end').addClass('error-input')

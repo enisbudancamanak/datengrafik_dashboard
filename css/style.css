@@ -144,7 +144,7 @@ body {
 .datepicker-row {
   padding: 0 !important;
   width: auto !important;
-  width: 50% !important;
+  width: 65% !important;
 }
 
 .dashboardFull {
@@ -169,8 +169,8 @@ body {
   display: flex;
   flex-direction: row;
   gap: 1em;
-  width: 100%;
-  justify-content: space-around;
+  width: 99%;
+  justify-content: space-between;
   color: white;
 }
 
@@ -193,21 +193,20 @@ body {
 }
 
 .overview-card:hover {
-  background: rgba(255, 255, 255, 00.1);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.overview-card span:first-child {
+.overview-card span:nth-child(1) {
   font-weight: 400;
 }
 
-.overview-card span:last-child {
+.overview-card span:nth-child(2) {
   font-size: 1.3em !important;
   font-weight: 450;
+}
+
+.overview-card div {
+  color: black;
 }
 
 /* Card Element (Contents) */
@@ -255,6 +254,7 @@ body {
 
 /* CHART RELEVANT */
 div.tooltip {
+  top: 0;
   position: absolute;
   text-align: center;
   padding: 0.5rem;
@@ -267,6 +267,7 @@ div.tooltip {
 }
 
 div.donut-tip {
+  top: 0;
   position: absolute;
   text-align: center;
   font: 12px sans-serif;

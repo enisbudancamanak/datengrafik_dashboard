@@ -19,6 +19,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/4.0.0/intro.min.js"
         integrity="sha512-+hhhH0eKqYCmXsO28OJE1HHWkgNYwlpceBwmeeDEt5jpCL8jOuqAVunXlZ/WZ4qIluJdwlcv4f5BUIQ/l1w9iw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/4.0.0/introjs.min.css"
         integrity="sha512-631ugrjzlQYCOP9P8BOLEMFspr5ooQwY3rgt8SMUa+QqtVMbY/tniEUOcABHDGjK50VExB4CNc61g5oopGqCEw=="
@@ -32,6 +34,7 @@
     <!-- LOCAL STUFF -->
     <link rel="stylesheet" href="css/style.css">
     <script src="./js/index.js"></script>
+    <script src="./js/overviewCharts.js"></script>
 
     <!-- D3.js -->
     <script src="./js/libraries/d3.v4.min.js"></script>
@@ -310,7 +313,7 @@
                 <i class="material-icons">home</i>
                 <p>Dashboard</p>
             </div>
-            <div id="BarRaceMenu" class="icon-text">
+            <div id="barRaceMenu" class="icon-text">
                 <i class="material-icons">flag</i>
                 <p>Daten-Rennen</p>
             </div>
@@ -333,7 +336,7 @@
                             <input class="form-control" type="text" placeholder="Anfang" id="from">
                         </div>
                         <span style="margin-top: 0.5em; font-weight: 500;">bis</span>
-                        <div class="col col-sm3">
+                        <div class="col col-sm3 ">
                             <input class="form-control" type="text" placeholder="Ende" id="end">
                         </div>
                         <!-- <input type="button" value="Anwenden" class="btn btn-primary" id="applyFilter"> -->
@@ -345,23 +348,38 @@
                 <section class="smallOverview">
                     <div class="overview-card">
                         <span>Neue Schüler insgesamt</span>
-                        <span id="overviewCard1">557 Schüler</span>
+                        <span id="overviewCard1Text">557 Schüler</span>
+                        <div style="margin: 0 auto;">
+                            <div id="overviewCard1"></div>
+                        </div>
                     </div>
                     <div class="overview-card">
                         <span>Allg. HZB im Durchschnitt</span>
-                        <span id="overviewCard2">39 Schüler</span>
+                        <span id="overviewCard2Text">39 Schüler</span>
+                        <div style="margin: 0 auto;">
+                            <div id="overviewCard2"></div>
+                        </div>
                     </div>
                     <div class="overview-card">
                         <span>FH-Reife im Durchschnitt</span>
-                        <span id="overviewCard3">35 Schüler</span>
+                        <span id="overviewCard3Text">35 Schüler</span>
+                        <div style="margin: 0 auto;">
+                            <div id="overviewCard3"></div>
+                        </div>
                     </div>
                     <div class="overview-card">
                         <span>Beruflich Qualifizierte im Durchschnitt</span>
-                        <span id="overviewCard4">2 Schüler</span>
+                        <span id="overviewCard4Text">2 Schüler</span>
+                        <div style="margin: 0 auto;">
+                            <div id="overviewCard4"></div>
+                        </div>
                     </div>
                     <div class="overview-card">
                         <span>Ausl. HZB/Studienkolleg im Durchschnitt</span>
-                        <span id="overviewCard5">3 Schüler</span>
+                        <span id="overviewCard5Text">3 Schüler</span>
+                        <div style="margin: 0 auto;">
+                            <div id="overviewCard5"></div>
+                        </div>
                     </div>
                 </section>
 
@@ -372,7 +390,7 @@
                     <div class="card-body">
                         <div id="bar-chart"></div>
                     </div>
-                    <div class="card-footer text-muted">
+                    <div class="card-footer">
                         <div class="legend-elements">
                             <div class="legend-element">
                                 <span id="square" style="color: #001219">■</span>
@@ -520,7 +538,7 @@
                 d3.selectAll("text").attr("fill", "black")
 
                 // Div for the Tooltip Hover
-                var div = d3.select("body").append("div")
+                var tooltipBar = d3.select("body").append("div")
                     .attr("class", "tooltip")
                     .style("opacity", 0);
 
@@ -549,21 +567,21 @@
                     .attr("x", function (d) { return xSubgroup(d.key); })
                     .attr("y", function (d) { return y(0); })
                     .attr("width", xSubgroup.bandwidth())
-                    .attr("stroke", "black")
+                    .attr("stroke", "white")
                     .style("stroke-width", "1px")
                     .attr("fill", "none")
                     .on("mousemove", function (d) {
                         d3.select(this).style("opacity", 0.75);
-                        div.transition()
+                        tooltipBar.transition()
                             .duration(50)
                             .style("opacity", 1);
-                        div.html(d.value + " Studenten<br/> " + d.key)
+                        tooltipBar.html(d.value + " Studenten<br/> " + d.key)
                             .style("left", (d3.event.pageX) + "px")
                             .style("top", (d3.event.pageY - 40) + "px");
                     })
                     .on("mouseout", function (d) {
                         d3.select(this).style("opacity", 1);
-                        div.transition()
+                        tooltipBar.transition()
                             .duration(50)
                             .style("opacity", 0);
                         svgBar.select('.line1').remove()
@@ -585,6 +603,7 @@
                     .duration(200)
                     .attr("fill", function (d) { return color(d.key); })
                     .attr("y", function (d) { return y(d.value); })
+                    .attr("ry", 2)
                     .attr("height", function (d) { return heightBar - y(d.value); })
                     .delay(function (d, i) { return (i * 50) })
             })
@@ -607,7 +626,7 @@
             $("#pie").html("");
 
             // Selecting our container to append the svg
-            var svg = d3.select("#pie")
+            var svgPie = d3.select("#pie")
                 .append("svg")
                 .attr("width", widthPie)
                 .attr("height", heightPie)
@@ -643,27 +662,27 @@
                 })(data);
 
             // Our Div on Hover (Tooltip)
-            var donutTip = d3.select("body").append("div")
+            var tooltipPie = d3.select("body").append("div")
                 .attr("class", "donut-tip")
                 .style("opacity", 0);
 
-            var g = svg.selectAll("arc")
+            var g = svgPie.selectAll("arc")
                 .data(pie)
                 .enter().append("g")
                 .attr("class", "arc")
                 .on('mousemove', function (d, i) {
                     d3.select(this).style("opacity", 0.75);
-                    donutTip.transition()
+                    tooltipPie.transition()
                         .duration(50)
                         .style("opacity", 1);
                     let num = ((d.value / d.data.all) * 100).toFixed(1).toString() + '%';
-                    donutTip.html(num + "<br/> " + d.data.title)
+                    tooltipPie.html(num + "<br/> " + d.data.title)
                         .style("left", (d3.event.pageX + 10) + "px")
                         .style("top", (d3.event.pageY - 15) + "px");
                 })
                 .on('mouseout', function (d, i) {
                     d3.select(this).style("opacity", 1);
-                    donutTip.transition()
+                    tooltipPie.transition()
                         .duration(50)
                         .style("opacity", 0);
                 })
@@ -672,7 +691,7 @@
             g.append("path")
                 .attr("d", arc)
                 .attr("stroke", "white")
-                .style("stroke-width", "1px")
+                .style("stroke-width", "2px")
                 .style("fill", function (d) {
                     return color(d.data.title);
                 }).transition()

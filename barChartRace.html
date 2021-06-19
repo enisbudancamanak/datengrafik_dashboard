@@ -43,10 +43,6 @@
             </div>
         </div>
         <div class="barRaceFull">
-            <div class="countdown animate__animated animate__backInLeft">
-                GO!
-            </div>
-
             <div class="barRaceContents">
                 <div class="headline">
                     <h2 class="text-white">Datensätze im Wettrennen (Experimentelles Feature)</h2>
@@ -86,7 +82,16 @@
 
         startRun()
         function startRun() {
+
+            //Recreating Countdown via Jquery
+            $('.countdown').remove()
+            $('.barRaceFull').append('<div class="countdown animate__animated animate__bounceIn"> GO!</div>').bind('animationend', () => {
+                $('.countdown').addClass('animate__animated').addClass('animation-timeline-end')
+            })
+
+            //Unfocusing Button for restart
             $('button').blur();
+            //Recreating Chart to avoid bugs
             $("#barRace-chart").html("");
 
             var svgBarRace = d3.select("#barRace-chart").append("svg")
@@ -165,6 +170,7 @@
                     .append('rect')
                     .attr('class', 'bar')
                     .attr('x', x(0) + 1)
+                    .attr("ry", 3)
                     .attr('width', d => x(d.value) - x(0) - 1)
                     .attr('y', d => y(d.rank) + 5)
                     .attr('height', y(1) - y(0) - barPadding)
@@ -199,9 +205,9 @@
                     .html(~~year)
                     .style('text-anchor', 'end')
                     .style('fill', '#ffffff')
-                    .style('stroke', '#000')
-                    .style('stroke-width', 2)
-                    .style('stroke-linejoin', 'round')
+                    // .style('stroke', '#fff')
+                    // .style('stroke-width', 2)
+                    // .style('stroke-linejoin', 'round')
                     .style('opacity', 1);
 
                 let ticker = d3.interval(e => {

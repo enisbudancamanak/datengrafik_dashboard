@@ -10,12 +10,4 @@ $(document).ready(function () {
   $('#dashboardMenu').on('click', function () {
     window.location.replace('index.html')
   })
-
-  document
-    .querySelector('.countdown')
-    .addEventListener('animationend', () => {
-      document
-        .querySelector('.countdown')
-        .classList.add('animate__animated', 'animation-timeline-end')
-    })
 })

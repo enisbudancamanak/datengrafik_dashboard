@@ -124,7 +124,7 @@ body {
   color: white;
 }
 
-.animate__animated.animate__backInLeft {
+.animate__animated.animate__bounceIn {
   --animate-duration: 1.5s;
 }
 
