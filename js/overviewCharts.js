@@ -8,6 +8,8 @@ $(document).ready(function () {
     './data/' + getURLParameter('page') + '/data.csv'
   )
 
+  setContentBeginning()
+
   var options1Array = []
   var options2Array = []
   var options3Array = []
