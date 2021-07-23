@@ -21,10 +21,7 @@ let indexOverviewChanged = false
 
 $(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
-  if (
-    !document.referrer.includes('barChartRace') &&
-    !document.referrer.includes('index')
-  ) {
+  if (!document.referrer.includes('barChartRace')) {
     // exec the function for displaying the data with delay
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
@@ -295,7 +292,10 @@ function readTextFileToCreatePieData(file) {
     }
   }
   rawFile.send(null)
-  createOverviewSmallCharts()
+
+  setTimeout(function () {
+    createOverviewSmallCharts()
+  }, 1000)
 }
 
 function csvJSON(csv) {
