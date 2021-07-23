@@ -87,7 +87,7 @@ $(document).ready(function () {
 
   $('#barRaceMenu').on('click', function () {
     window.location.replace(
-      '/barChartRace.html?page=' + getURLParameter('page')
+      'barChartRace.html?page=' + getURLParameter('page')
     )
   })
   $('#overviewMenu').on('click', function () {
