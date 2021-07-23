@@ -31,6 +31,6 @@ $(document).ready(function () {
       currentPath = 'studierende_nach_nationalitaet'
     }
 
-    window.location.href = '/dashboard.html?page=' + currentPath
+    window.location.replace('dashboard.html?page=' + currentPath)
   })
 })

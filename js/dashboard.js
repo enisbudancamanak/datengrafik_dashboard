@@ -91,11 +91,12 @@ $(document).ready(function () {
   })
 
   $('#barRaceMenu').on('click', function () {
-    window.location.href =
+    window.location.replace(
       '/barChartRace.html?page=' + getURLParameter('page')
+    )
   })
   $('#overviewMenu').on('click', function () {
-    window.location.href = '/index.html'
+    window.location.replace('index.html')
   })
 
   //the both input fields getting initialized with datepicker from bootstrap

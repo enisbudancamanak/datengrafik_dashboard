@@ -9,12 +9,12 @@ $(document).ready(function () {
 
   $('#dashboardMenu').on('click', function () {
     if (document.referrer.includes('dashboard'))
-      window.location.href = document.referrer
-    else window.location.href = 'dashboard.html'
+      window.location.replace(document.referrer)
+    else window.location.replace('dashboard.html')
   })
 
   $('#overviewMenu').on('click', function () {
-    window.location.href = '/index.html'
+    window.location.replace('index.html')
   })
 })
 
