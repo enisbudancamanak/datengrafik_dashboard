@@ -20,6 +20,11 @@ let allPieCharts = [
 let indexOverviewChanged = false
 
 $(document).ready(function () {
+  //readValuesFromCSVForPie
+  readTextFileToCreatePieData(
+    './data/' + getURLParameter('page') + '/data.csv'
+  )
+
   setHeadlineText(getURLParameter('page'))
   if (
     !document.referrer.includes('barChartRace') &&
