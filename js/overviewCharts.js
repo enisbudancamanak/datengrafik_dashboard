@@ -1,13 +1,4 @@
-//readValuesFromCSVForPie
-readTextFileToCreatePieData(
-  './data/' + getURLParameter('page') + '/data.csv'
-)
 $(document).ready(function () {
-  //readValuesFromCSVForPie
-  readTextFileToCreatePieData(
-    './data/' + getURLParameter('page') + '/data.csv'
-  )
-
   setContentBeginning()
 
   var options1Array = []
