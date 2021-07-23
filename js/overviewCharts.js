@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  setContentBeginning()
-
   var options1Array = []
   var options2Array = []
   var options3Array = []

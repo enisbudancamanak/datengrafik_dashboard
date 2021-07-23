@@ -25,6 +25,11 @@ readTextFileToCreatePieData(
 )
 
 $(document).ready(function () {
+  //readValuesFromCSVForPie
+  readTextFileToCreatePieData(
+    './data/' + getURLParameter('page') + '/data.csv'
+  )
+
   setHeadlineText(getURLParameter('page'))
   setContentBeginning()
   if (
