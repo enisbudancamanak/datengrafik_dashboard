@@ -158,8 +158,6 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
-
-  setContentBeginning()
 })
 
 function setContentBeginning() {

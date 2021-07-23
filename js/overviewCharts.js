@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  setContentBeginning()
   setTimeout(function () {
     var options1Array = []
     var options2Array = []
@@ -367,7 +368,7 @@ $(document).ready(function () {
         if (document.querySelector('#overviewCard5')) chart5.render()
       } catch (error) {}
     }
-  }, 1000)
+  }, 0)
 })
 
 function createArrayForSpecificOption(index) {
