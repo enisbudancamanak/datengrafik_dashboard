@@ -159,7 +159,9 @@ $(document).ready(function () {
     setContent(d)
   })
 
-  setContentBeginning()
+  setTimeout(function () {
+    setContentBeginning()
+  }, 0)
 })
 
 function setContentBeginning() {
