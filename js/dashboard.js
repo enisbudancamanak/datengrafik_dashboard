@@ -25,6 +25,7 @@ readTextFileToCreatePieData(
 )
 
 $(document).ready(function () {
+  setContentBeginning()
   setHeadlineText(getURLParameter('page'))
   if (
     !document.referrer.includes('barChartRace') &&
