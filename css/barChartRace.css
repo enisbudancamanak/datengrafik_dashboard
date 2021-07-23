@@ -35,6 +35,7 @@ body {
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  padding: 0px 7px;
 }
 
 .sidebar > div {
@@ -55,7 +56,7 @@ body {
   display: block;
   background: white;
   height: 29px;
-  width: 100%;
+  width: 105%;
   bottom: 20px;
   left: 10px;
   position: absolute;
@@ -94,6 +95,22 @@ body {
 
 .icon-text > i {
   vertical-align: middle;
+}
+
+.creditsToMe {
+  flex-grow: 1;
+  border: none !important;
+  cursor: default !important;
+  display: flex;
+}
+
+.creditsToMe p {
+  position: absolute;
+  bottom: 0;
+  cursor: text;
+  font-weight: 600;
+  text-align: center;
+  width: 80%;
 }
 
 .material-icons {

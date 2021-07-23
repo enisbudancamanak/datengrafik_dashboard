@@ -1,0 +1,15 @@
+name,value,year,lastValue,rank
+Bildungsinländisch,266,2013,0,1
+Bildungsinländisch,272,2014,266,1
+Bildungsinländisch,303,2015,272,1
+Bildungsinländisch,312,2016,303,1
+Bildungsinländisch,328,2017,312,1
+Bildungsinländisch,302,2018,328,1
+Bildungsinländisch,309,2019,302,1
+Bildungsausländisch,3,2013,0,2
+Bildungsausländisch,7,2014,3,2
+Bildungsausländisch,10,2015,7,2
+Bildungsausländisch,10,2016,10,2
+Bildungsausländisch,12,2017,10,2
+Bildungsausländisch,15,2018,12,2
+Bildungsausländisch,19,2019,15,2

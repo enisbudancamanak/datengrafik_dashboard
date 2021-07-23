@@ -8,6 +8,19 @@ $(document).ready(function () {
   })
 
   $('#dashboardMenu').on('click', function () {
-    window.location.replace('index.html')
+    if (document.referrer.includes('dashboard'))
+      window.location.href = document.referrer
+    else window.location.href = 'dashboard.html'
+  })
+
+  $('#overviewMenu').on('click', function () {
+    window.location.href = '/index.html'
   })
 })
+
+function getURLParameter(parameter) {
+  let parameters = new URLSearchParams(window.location.search)
+  if (parameters.get(parameter) == null)
+    return 'anfaenge_nach_berechtigung'
+  return parameters.get(parameter)
+}

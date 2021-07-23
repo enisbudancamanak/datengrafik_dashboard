@@ -37,9 +37,12 @@
                 <i class="material-icons">flag</i>
                 <p>Daten-Rennen</p>
             </div>
-            <div class="icon-text">
-                <i class="material-icons">home</i>
-                <p>Contact?</p>
+            <div id="overviewMenu" class="icon-text">
+                <i class="material-icons">analytics</i>
+                <p>Zur Übersicht</p>
+            </div>
+            <div class="creditsToMe">
+                <p>BY ENIS BUDANCAMANAK</p>
             </div>
         </div>
         <div class="barRaceFull">
@@ -55,22 +58,6 @@
                     </div>
                     <div class="cardFooter text-black">
                         <div class="legend-elements">
-                            <div class="legend-element">
-                                <span id="square" style="color: #001219">■</span>
-                                <div class="text-black">Allg. HZB</div>
-                            </div>
-                            <div class="legend-element">
-                                <span id="square" style="color: #005f73">■</span>
-                                <div class="text-black">FH-Reife</div>
-                            </div>
-                            <div class="legend-element">
-                                <span id="square" style="color: #0a9396">■</span>
-                                <div class="text-black">Beruflich Qualifizierte</div>
-                            </div>
-                            <div class="legend-element">
-                                <span id="square" style="color: #94d2bd">■</span>
-                                <div class="text-black">Ausl. HZB/Studienkolleg</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,6 +66,8 @@
     </div>
 
     <script>
+
+        let legendsCreated = false
 
         startRun()
         function startRun() {
@@ -112,13 +101,35 @@
             };
 
             let barPadding = (height - (margin.bottom + margin.top)) / (top_n * 5);
-
             let year = 2013;
 
-            d3.csv('./datenwerte_race.csv').then(function (data) {
+            let legendColors = ['#003440', '#005f73', '#0a9396', '#94d2bd']
+            let indexBarLegends = 1
+
+            d3.csv("./data/" + getURLParameter('page') + "/datenwerte_race.csv").then(function (data) {
 
                 var color = d3.scaleOrdinal()
-                    .range(['#001219', '#005f73', '#0a9396', '#94d2bd'])
+                    .range(['#003440', '#005f73', '#0a9396', '#94d2bd'])
+
+
+                //CREATE LEGENDS
+                if (!legendsCreated) {
+                    var uniqueArray = data.reduce((unique, o) => {
+                        if (!unique.some(obj => obj.name === o.name)) {
+                            unique.push(o);
+                        }
+                        return unique;
+                    }, []);
+                    Object.keys(uniqueArray).forEach(function (key, index) {
+                        if (key != "group") {
+                            $('.legend-elements').append(
+                                '<div class="legend-element"> <span id = "square" style = "color:' + legendColors[indexBarLegends - 1] + '" >■</span><div class="text-black">' + uniqueArray[key].name + '</div></div > '
+                            )
+                            indexBarLegends += 1
+                        }
+                    })
+                    legendsCreated = true
+                }
 
                 data.forEach(d => {
                     d.value = +d.value,
@@ -129,10 +140,18 @@
                 });
 
                 // Defining colours for the rects
-                data[0].colour = "#001219";
-                data[7].colour = " #005f73";
-                data[14].colour = "#0a9396";
-                data[21].colour = "#94d2bd";
+                try {
+                    data[0].colour = "#003440";
+                } catch (error) { }
+                try {
+                    data[7].colour = " #005f73";
+                } catch (error) { }
+                try {
+                    data[14].colour = "#0a9396";
+                } catch (error) { }
+                try {
+                    data[21].colour = "#94d2bd";
+                } catch (error) { }
 
 
                 let yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
@@ -140,8 +159,6 @@
                     .slice(0, top_n);
 
                 yearSlice.forEach((d, i) => d.rank = i);
-
-                console.log('yearSlice: ', yearSlice)
 
                 let x = d3.scaleLinear()
                     .domain([0, d3.max(yearSlice, d => d.value)])

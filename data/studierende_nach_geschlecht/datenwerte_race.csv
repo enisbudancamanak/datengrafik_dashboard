@@ -1,0 +1,15 @@
+name,value,year,lastValue,rank
+Männlich,223,2013,0,1
+Männlich,233,2014,223,1
+Männlich,253,2015,233,1
+Männlich,261,2016,253,1
+Männlich,267,2017,261,1
+Männlich,256,2018,267,1
+Männlich,253,2019,256,1
+Weiblich,46,2013,0,2
+Weiblich,46,2014,46,2
+Weiblich,60,2015,46,2
+Weiblich,61,2016,60,2
+Weiblich,73,2017,61,2
+Weiblich,61,2018,73,2
+Weiblich,75,2019,61,2
