@@ -150,8 +150,6 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
-
-  setContentBeginning()
 })
 
 function setContentBeginning() {
@@ -294,6 +292,7 @@ function readTextFileToCreatePieData(file) {
   rawFile.send(null)
 
   setTimeout(function () {
+    setContentBeginning()
     createOverviewSmallCharts()
   }, 1000)
 }
