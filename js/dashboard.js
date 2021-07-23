@@ -25,13 +25,7 @@ readTextFileToCreatePieData(
 )
 
 $(document).ready(function () {
-  //readValuesFromCSVForPie
-  readTextFileToCreatePieData(
-    './data/' + getURLParameter('page') + '/data.csv'
-  )
-
   setHeadlineText(getURLParameter('page'))
-  setContentBeginning()
   if (
     !document.referrer.includes('barChartRace') &&
     !document.referrer.includes('index')
@@ -164,6 +158,8 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
+
+  setContentBeginning()
 })
 
 function setContentBeginning() {
