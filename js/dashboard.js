@@ -19,11 +19,6 @@ let allPieCharts = [
 
 let indexOverviewChanged = false
 
-//readValuesFromCSVForPie
-readTextFileToCreatePieData(
-  './data/' + getURLParameter('page') + '/data.csv'
-)
-
 $(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
   if (
