@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  setContentBeginning()
-
   setTimeout(function () {
     var options1Array = []
     var options2Array = []
