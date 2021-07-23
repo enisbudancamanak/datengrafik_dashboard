@@ -19,12 +19,12 @@ let allPieCharts = [
 
 let indexOverviewChanged = false
 
-$(document).ready(function () {
-  //readValuesFromCSVForPie
-  readTextFileToCreatePieData(
-    './data/' + getURLParameter('page') + '/data.csv'
-  )
+//readValuesFromCSVForPie
+readTextFileToCreatePieData(
+  './data/' + getURLParameter('page') + '/data.csv'
+)
 
+$(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
   if (
     !document.referrer.includes('barChartRace') &&
@@ -159,9 +159,7 @@ $(document).ready(function () {
     setContent(d)
   })
 
-  setTimeout(function () {
-    setContentBeginning()
-  }, 0)
+  setContentBeginning()
 })
 
 function setContentBeginning() {
