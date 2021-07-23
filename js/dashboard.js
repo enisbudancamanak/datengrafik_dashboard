@@ -21,7 +21,10 @@ let indexOverviewChanged = false
 
 $(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
-  if (!document.referrer.includes('barChartRace')) {
+  if (
+    !document.referrer.includes('barChartRace') &&
+    !document.referrer.includes('index')
+  ) {
     // exec the function for displaying the data with delay
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
@@ -150,6 +153,8 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
+
+  setContentBeginning()
 })
 
 function setContentBeginning() {
@@ -204,6 +209,8 @@ function setContentBeginning() {
   $('#overviewCard1Text').html(
     valueAll / allPieCharts[0].length + ' Studenten'
   )
+
+  createOverviewSmallCharts()
 }
 
 function setContent(d) {
@@ -290,11 +297,6 @@ function readTextFileToCreatePieData(file) {
     }
   }
   rawFile.send(null)
-
-  setTimeout(function () {
-    setContentBeginning()
-    createOverviewSmallCharts()
-  }, 1000)
 }
 
 function csvJSON(csv) {
