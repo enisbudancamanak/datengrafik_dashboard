@@ -34,11 +34,17 @@
     <!-- LOCAL STUFF -->
     <link rel="stylesheet" href="css/dashboard.css">
     <script src="./js/dashboard.js"></script>
+    <script>
+        //readValuesFromCSVForPie
+        readTextFileToCreatePieData(
+            './data/' + getURLParameter('page') + '/data.csv'
+        )
+    </script>
+
     <script src="./js/overviewCharts.js"></script>
 
     <!-- D3.js -->
     <script src="./js/libraries/d3.v4.min.js"></script>
-
 </head>
 
 <body>
@@ -314,7 +320,8 @@
                 <i class="material-icons">flag</i>
                 <p>Daten-Rennen</p>
             </div>
-            <div id="overviewMenu" class="icon-text">
+            <div id="overviewMenu" class="icon-text" data-title="Zurück zur Übersicht!"
+                data-intro="Hier können Sie wieder zurück, um die anderen Daten einsehen zu können 🌐">
                 <i class="material-icons">analytics</i>
                 <p>Zur Übersicht</p>
             </div>
