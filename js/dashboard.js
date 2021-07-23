@@ -295,6 +295,7 @@ function readTextFileToCreatePieData(file) {
     }
   }
   rawFile.send(null)
+  createOverviewSmallCharts()
 }
 
 function csvJSON(csv) {

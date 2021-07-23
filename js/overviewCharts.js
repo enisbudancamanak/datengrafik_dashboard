@@ -1,4 +1,4 @@
-$(document).ready(function () {
+function createOverviewSmallCharts() {
   var options1Array = []
   var options2Array = []
   var options3Array = []
@@ -366,7 +366,7 @@ $(document).ready(function () {
       if (document.querySelector('#overviewCard5')) chart5.render()
     } catch (error) {}
   }
-})
+}
 
 function createArrayForSpecificOption(index) {
   try {
