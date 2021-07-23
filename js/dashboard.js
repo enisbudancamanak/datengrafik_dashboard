@@ -19,13 +19,7 @@ let allPieCharts = [
 
 let indexOverviewChanged = false
 
-//readValuesFromCSVForPie
-readTextFileToCreatePieData(
-  './data/' + getURLParameter('page') + '/data.csv'
-)
-
 $(document).ready(function () {
-  setContentBeginning()
   setHeadlineText(getURLParameter('page'))
   if (
     !document.referrer.includes('barChartRace') &&
@@ -159,6 +153,8 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
+
+  setContentBeginning()
 })
 
 function setContentBeginning() {
