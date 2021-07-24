@@ -25,7 +25,7 @@ $(document).ready(function () {
   if (
     !document.referrer.includes('barChartRace') &&
     !document.referrer.includes('index') &&
-    !document.referrer.includes('dashboard')
+    !document.referrer.includes('dashboard.html')
   ) {
     // exec the function for displaying the data with delay
     setTimeout(function () {
