@@ -21,20 +21,22 @@ let indexOverviewChanged = false
 
 $(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
+
   if (
     !document.referrer.includes('barChartRace') &&
-    !document.referrer.includes('index')
+    !document.referrer.includes('index') &&
+    !document.referrer.includes('dashboard')
   ) {
-    //TO Prevent Error while loading
-    if (allPieCharts[0].length == 0) {
-      location.replace(document.location)
-    }
     // exec the function for displaying the data with delay
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
     }, 4100) //4100
 
     setTimeout(function () {
+      //TO Prevent Error while loading
+      if (allPieCharts[0].length == 0) {
+        location.replace(document.location)
+      }
       changeDataPieChart(allPieCharts[0])
     }, 4300) //4300
 
@@ -72,15 +74,15 @@ $(document).ready(function () {
     $('.intro').css('visibility', 'hidden')
     $('#introSVG').css('visibility', 'hidden')
 
-    //TO Prevent Error while loading
-    if (allPieCharts[0].length == 0) {
-      location.replace(document.location)
-    }
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
     }, 0)
 
     setTimeout(function () {
+      //TO Prevent Error while loading
+      if (allPieCharts[0].length == 0) {
+        location.replace(document.location)
+      }
       changeDataPieChart(allPieCharts[0])
     }, 0)
   }
