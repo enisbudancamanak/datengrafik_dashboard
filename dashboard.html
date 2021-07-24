@@ -40,7 +40,6 @@
             './data/' + getURLParameter('page') + '/data.csv'
         )
     </script>
-
     <script src="./js/overviewCharts.js"></script>
 
     <!-- D3.js -->
@@ -332,9 +331,14 @@
 
         <div class="dashboardBody">
             <div class="headline">
-                <h3>Studienanfänger*innen nach Hochschulzugangsberechtigung
-                    (<span id="fromHeadline">2013</span> - <span id="toHeadline">2019</span>)
-                </h3>
+                <div style="display: flex;">
+                    <h3>Studienanfänger*innen nach Hochschulzugangsberechtigung
+                    </h3>
+                    <h4>‎‎‎‏‏‎ ‎(
+                        <span id="fromHeadline">2013</span> - <span id="toHeadline">2019</span>
+                        )
+                    </h4>
+                </div>
                 <div>
                     <div class="row align-items-center datepicker-row" style="margin-top: -0.7em;"
                         data-title="Zeitraum bestimmen!"
