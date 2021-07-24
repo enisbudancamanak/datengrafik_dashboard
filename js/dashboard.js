@@ -73,6 +73,7 @@ $(document).ready(function () {
     }, 0)
 
     setTimeout(function () {
+      console.log(allPieCharts[0])
       changeDataPieChart(allPieCharts[0])
     }, 0)
   }
