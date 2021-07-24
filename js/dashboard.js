@@ -37,6 +37,7 @@ $(document).ready(function () {
       if (allPieCharts[0].length == 0) {
         location.replace(document.location)
       }
+      setContentBeginning()
       changeDataPieChart(allPieCharts[0])
     }, 4300) //4300
 
@@ -84,6 +85,7 @@ $(document).ready(function () {
         location.replace(document.location)
       }
       changeDataPieChart(allPieCharts[0])
+      setContentBeginning()
     }, 0)
   }
 
@@ -163,8 +165,6 @@ $(document).ready(function () {
   $('#from, #end').on('change', function (d) {
     setContent(d)
   })
-
-  setContentBeginning()
 })
 
 function setContentBeginning() {
