@@ -298,6 +298,7 @@ function readTextFileToCreatePieData(file) {
       }
     }
   }
+  console.log('READFINISHED')
   rawFile.send(null)
 }
 
