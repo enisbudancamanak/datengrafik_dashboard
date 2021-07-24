@@ -210,9 +210,7 @@ function setContentBeginning() {
     valueAll / allPieCharts[0].length + ' Studenten'
   )
 
-  setTimeout(function () {
-    createOverviewSmallCharts()
-  }, 0)
+  createOverviewSmallCharts()
 }
 
 function setContent(d) {
