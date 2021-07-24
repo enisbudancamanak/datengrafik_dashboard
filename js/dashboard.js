@@ -212,6 +212,7 @@ function setContentBeginning() {
 
   setTimeout(function () {
     createOverviewSmallCharts()
+    console.log('OVERVIEW LOADED')
   }, 0)
 }
 
