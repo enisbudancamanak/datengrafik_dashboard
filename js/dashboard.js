@@ -25,6 +25,9 @@ $(document).ready(function () {
     !document.referrer.includes('barChartRace') &&
     !document.referrer.includes('index')
   ) {
+    if (allPieCharts[0].length == 0) {
+      location.reload()
+    }
     // exec the function for displaying the data with delay
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
@@ -68,12 +71,14 @@ $(document).ready(function () {
     $('.intro').css('visibility', 'hidden')
     $('#introSVG').css('visibility', 'hidden')
 
+    if (allPieCharts[0].length == 0) {
+      location.reload()
+    }
     setTimeout(function () {
       changeDataBarChart(2013, 2019)
     }, 0)
 
     setTimeout(function () {
-      console.log(allPieCharts[0])
       changeDataPieChart(allPieCharts[0])
     }, 0)
   }
