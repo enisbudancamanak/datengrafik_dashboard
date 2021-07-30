@@ -31,15 +31,23 @@ function getURLParameter(parameter) {
 }
 
 function startPoster() {
-  const test = new Letterize({
+  const letters = new Letterize({
     targets: '.poster-text',
   })
 
+  var outroText = {}
+  outroText.opacityIn = [0, 1]
+  outroText.scaleIn = [0.2, 1]
+  outroText.scaleOut = 3
+  outroText.durationIn = 800
+  outroText.durationOut = 600
+  outroText.delay = 500
+
   // INTRO ANIMATION
   const animation = anime.timeline({
-    targets: test.listAll,
-    delay: anime.stagger(50, {
-      grid: [test.list[0].length, test.list.length],
+    targets: letters.listAll,
+    delay: anime.stagger(15, {
+      grid: [letters.list[0].length, letters.list.length],
       from: 'center',
     }),
     loop: false,
@@ -70,9 +78,9 @@ function startPoster() {
             targets: '#logoSVG',
             keyframes: [
               { scale: 1, rotate: '0deg' },
-              { scale: 0.95, rotate: '5deg' },
+              { scale: 0.98, rotate: '2deg' },
               { scale: 1, rotate: '0deg' },
-              { scale: 0.95, rotate: '5deg' },
+              { scale: 0.98, rotate: '2deg' },
               { scale: 1, rotate: '0deg' },
             ],
             duration: 2500,
@@ -98,36 +106,71 @@ function startPoster() {
               targets: '#introSVG',
               opacity: 0,
               duration: 1500,
-              complete: function () {
-                anime({
-                  targets: '.intro',
-                  opacity: 0,
-                  delay: 500, //1500
-                  duration: 500, //500
-                  complete: function (anim) {
-                    $('.intro').css('visibility', 'hidden')
-                    $('#introSVG').css('visibility', 'hidden')
-                    $('#playAgainButton').css('visibility', 'visible')
-
-                    anime({
-                      targets: '#playAgainButton',
-                      opacity: 1,
-                      delay: 500,
-                      duration: 500,
-                      begin: function (anim) {},
-                    })
-                  },
-                })
-              },
             },
             '-=500'
           )
+          $('.poster-text').html(
+            'Internationaler Studiengang Medieninformatik B.Sc.'
+          )
+          tl.add(
+            {
+              targets: '.textHolderDiv',
+              opacity: outroText.opacityIn,
+              scale: outroText.scaleIn,
+              duration: outroText.durationIn,
+            },
+            '-=500'
+          )
+          tl.add({
+            targets: '.textHolderDiv',
+            opacity: 0,
+            scale: outroText.scaleOut,
+            duration: outroText.durationOut,
+            easing: 'easeInExpo',
+            delay: outroText.delay,
+            complete: function (anim) {
+              $('.poster-text').html(
+                'Studiengangsbericht von 2013 bis 2019'
+              )
+            },
+          })
+          tl.add({
+            targets: '.textHolderDiv',
+            opacity: outroText.opacityIn,
+            scale: outroText.scaleIn,
+            duration: outroText.durationIn,
+          })
+          tl.add({
+            targets: '.textHolderDiv',
+            opacity: 0,
+            scale: outroText.scaleOut,
+            duration: outroText.durationOut,
+            easing: 'easeInExpo',
+            delay: outroText.delay,
+            complete: function () {
+              anime({
+                targets: '.intro',
+                opacity: 0,
+                delay: 500, //1500
+                duration: 500, //500
+                complete: function (anim) {
+                  $('.intro').css('visibility', 'hidden')
+                  $('#introSVG').css('visibility', 'hidden')
+
+                  reloadPage()
+                },
+              })
+            },
+          })
         },
       })
     },
   })
 
   animation
+    .add({
+      delay: 2000,
+    })
     .add({
       scale: 0.5,
     })

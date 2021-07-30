@@ -42,15 +42,23 @@ $(document).ready(function () {
       changeDataPieChart(allPieCharts[0])
     }, 4300) //4300
 
-    const test = new Letterize({
+    const letters = new Letterize({
       targets: '.poster-text',
     })
 
+    var outroText = {}
+    outroText.opacityIn = [0, 1]
+    outroText.scaleIn = [0.2, 1]
+    outroText.scaleOut = 3
+    outroText.durationIn = 800
+    outroText.durationOut = 600
+    outroText.delay = 500
+
     // INTRO ANIMATION
     const animation = anime.timeline({
-      targets: test.listAll,
-      delay: anime.stagger(50, {
-        grid: [test.list[0].length, test.list.length],
+      targets: letters.listAll,
+      delay: anime.stagger(15, {
+        grid: [letters.list[0].length, letters.list.length],
         from: 'center',
       }),
       loop: false,
@@ -81,9 +89,9 @@ $(document).ready(function () {
               targets: '#logoSVG',
               keyframes: [
                 { scale: 1, rotate: '0deg' },
-                { scale: 0.95, rotate: '5deg' },
+                { scale: 0.98, rotate: '2deg' },
                 { scale: 1, rotate: '0deg' },
-                { scale: 0.95, rotate: '5deg' },
+                { scale: 0.98, rotate: '2deg' },
                 { scale: 1, rotate: '0deg' },
               ],
               duration: 2500,
@@ -109,31 +117,71 @@ $(document).ready(function () {
                 targets: '#introSVG',
                 opacity: 0,
                 duration: 1500,
-                complete: function () {
-                  anime({
-                    targets: '.intro',
-                    opacity: 0,
-                    delay: 500, //1500
-                    duration: 500, //500
-                    complete: function (anim) {
-                      $('.intro').css('visibility', 'hidden')
-                      $('#introSVG').css('visibility', 'hidden')
-                      // Start Intro for Datepicker
-                      introJs()
-                        .setOptions({ doneLabel: 'Verstanden 😎' })
-                        .start()
-                    },
-                  })
-                },
               },
               '-=500'
             )
+            $('.poster-text').html(
+              'Internationaler Studiengang Medieninformatik B.Sc.'
+            )
+            tl.add(
+              {
+                targets: '.textHolderDiv',
+                opacity: outroText.opacityIn,
+                scale: outroText.scaleIn,
+                duration: outroText.durationIn,
+              },
+              '-=500'
+            )
+            tl.add({
+              targets: '.textHolderDiv',
+              opacity: 0,
+              scale: outroText.scaleOut,
+              duration: outroText.durationOut,
+              easing: 'easeInExpo',
+              delay: outroText.delay,
+              complete: function (anim) {
+                $('.poster-text').html(
+                  $('.headline h3').html() + ' von 2013 bis 2019'
+                )
+              },
+            })
+            tl.add({
+              targets: '.textHolderDiv',
+              opacity: outroText.opacityIn,
+              scale: outroText.scaleIn,
+              duration: outroText.durationIn,
+            })
+            tl.add({
+              targets: '.textHolderDiv',
+              opacity: 0,
+              scale: outroText.scaleOut,
+              duration: outroText.durationOut,
+              easing: 'easeInExpo',
+              delay: outroText.delay,
+              complete: function () {
+                anime({
+                  targets: '.intro',
+                  opacity: 0,
+                  delay: 500, //1500
+                  duration: 500, //500
+                  complete: function (anim) {
+                    $('.intro').css('visibility', 'hidden')
+                    $('#introSVG').css('visibility', 'hidden')
+
+                    reloadPage()
+                  },
+                })
+              },
+            })
           },
         })
       },
     })
 
     animation
+      .add({
+        delay: 2000,
+      })
       .add({
         scale: 0.5,
       })
@@ -163,6 +211,27 @@ $(document).ready(function () {
       changeDataPieChart(allPieCharts[0])
       setContentBeginning()
     }, 0)
+  }
+
+  // Touch Event on headline mouseover
+  const headlineTargets = new Letterize({
+    targets: 'h3',
+  })
+
+  for (var i = 0; i < headlineTargets.listAll.length; i++) {
+    headlineTargets.listAll[i].addEventListener(
+      'mouseover',
+      function (e) {
+        // console.log(e.target)
+
+        anime.timeline({ loop: 1 }).add({
+          targets: e.target,
+          scale: [1.5, 1],
+          duration: 900,
+          easing: 'spring(1, 200, 10, 0)',
+        })
+      }
+    )
   }
 
   //HANDLING SIDEBAR MENUPOINTS
@@ -274,6 +343,11 @@ function setContentBeginning() {
       indexOverviewChanged = true
     })
 
+  if (indexOverview <= 4)
+    $('.smallOverview').css('justify-content', 'center')
+  else if (indexOverview > 4)
+    $('.smallOverview').css('justify-content', 'space-around')
+
   var valueAll = 0
   for (var i = 1; i <= allPieCharts[0].length; i++) {
     var value = 0
@@ -303,7 +377,6 @@ function setContentBeginning() {
 
   setTimeout(function () {
     createOverviewSmallCharts()
-    console.log('OVERVIEW LOADED')
   }, 0)
 }
 
@@ -323,22 +396,6 @@ function setContent(d) {
       var yearsDifference = endYear - fromYear + 1
       if (yearsDifference == 0) yearsDifference = 1
       var dateForPie = 0
-
-      var indexOverview = 2
-      if (!indexOverviewChanged)
-        allPieCharts[0].forEach((data) => {
-          $('.smallOverview').append(
-            '<div class="overview-card"><span>' +
-              data.title +
-              ' im Durchschnitt</span><span id="overviewCard' +
-              indexOverview +
-              'Text">0</span><div style="margin: 0 auto;"><div id="overviewCard' +
-              indexOverview +
-              '"></div></div></div>'
-          )
-          indexOverview += 1
-          indexOverviewChanged = true
-        })
 
       lastChangedElementValue = $('#' + d.target.id).val()
       var valueAll = 0
@@ -390,7 +447,6 @@ function readTextFileToCreatePieData(file) {
       }
     }
   }
-  console.log('READFINISHED')
   rawFile.send(null)
 }
 
@@ -485,7 +541,7 @@ function getURLParameter(parameter) {
 // General Variables
 //BAR CHART
 var margin = { top: 20, right: 30, bottom: 20, left: 50 },
-  widthBar = 950 - margin.left - margin.right,
+  widthBar = 900 - margin.left - margin.right,
   heightBar = 400 - margin.top - margin.bottom
 
 //PIE CHART

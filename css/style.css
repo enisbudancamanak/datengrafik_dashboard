@@ -69,3 +69,7 @@ body {
 .material-icons {
   font-size: 2em;
 }
+
+h1 span {
+  display: inline-block;
+}

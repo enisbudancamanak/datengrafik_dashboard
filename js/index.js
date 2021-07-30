@@ -33,4 +33,24 @@ $(document).ready(function () {
 
     window.location.replace('dashboard.html?page=' + currentPath)
   })
+
+  const headlineTargets = new Letterize({
+    targets: 'h1',
+  })
+
+  for (var i = 0; i < headlineTargets.listAll.length; i++) {
+    headlineTargets.listAll[i].addEventListener(
+      'mouseover',
+      function (e) {
+        // console.log(e.target)
+
+        anime.timeline({ loop: 1 }).add({
+          targets: e.target,
+          scale: [1.5, 1],
+          duration: 900,
+          easing: 'spring(1, 200, 10, 0)',
+        })
+      }
+    )
+  }
 })

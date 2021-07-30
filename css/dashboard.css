@@ -39,6 +39,14 @@ body {
   text-align: center;
 }
 
+.intro .poster-text span {
+  display: inline-block;
+}
+
+h3 span {
+  display: inline-block;
+}
+
 .intro svg {
   visibility: hidden;
 }
@@ -195,10 +203,10 @@ body {
 .smallOverview {
   display: flex;
   flex-direction: row;
-  gap: 4em;
-  width: 99%;
-  /* justify-content: space-around; */
-  justify-content: center;
+  gap: 0.75em;
+  width: 100%;
+  /* justify-content: space-around;
+  justify-content: center; */
   color: white;
 }
 

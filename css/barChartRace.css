@@ -276,3 +276,7 @@ text.valueLabel {
 text.yearText {
   font-size: 64px;
 }
+
+.headlineText span {
+  display: inline-block;
+}
