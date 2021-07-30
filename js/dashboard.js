@@ -25,7 +25,8 @@ $(document).ready(function () {
   if (
     !document.referrer.includes('barChartRace') &&
     !document.referrer.includes('index') &&
-    !document.referrer.includes('dashboard.html')
+    !document.referrer.includes('dashboard.html') &&
+    !document.referrer.includes('poster')
   ) {
     // exec the function for displaying the data with delay
     setTimeout(function () {
@@ -41,35 +42,110 @@ $(document).ready(function () {
       changeDataPieChart(allPieCharts[0])
     }, 4300) //4300
 
+    const test = new Letterize({
+      targets: '.poster-text',
+    })
+
     // INTRO ANIMATION
-    anime({
-      targets: '#introSVG path',
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'cubicBezier(.5, .05, .1, .3)',
-      duration: 2500, //2500
-      direction: 'alternate',
+    const animation = anime.timeline({
+      targets: test.listAll,
+      delay: anime.stagger(50, {
+        grid: [test.list[0].length, test.list.length],
+        from: 'center',
+      }),
       loop: false,
-      delay: 500,
-      begin: function (anim) {
-        $('#introSVG').css('visibility', 'visible')
-      },
       complete: function (anim) {
         anime({
-          targets: '.intro',
+          targets: '.textHolderDiv',
           opacity: 0,
-          delay: 1500, //1500
-          duration: 500, //500
+          duration: 500,
+        })
+        anime({
+          targets: '#introSVG path',
+          strokeDashoffset: [anime.setDashoffset, 0],
+          easing: 'cubicBezier(.5, .05, .1, .3)',
+          duration: 2500, //2500
+          direction: 'alternate',
+          loop: false,
+          delay: 500,
+          begin: function (anim) {
+            $('#introSVG').css('visibility', 'visible')
+          },
           complete: function (anim) {
-            $('.intro').css('visibility', 'hidden')
-            $('#introSVG').css('visibility', 'hidden')
-            // Start Intro for Datepicker
-            introJs()
-              .setOptions({ doneLabel: 'Verstanden 😎' })
-              .start()
+            let tl = anime.timeline({
+              duration: 4000,
+              easing: 'easeInOutQuart',
+            })
+
+            tl.add({
+              targets: '#logoSVG',
+              keyframes: [
+                { scale: 1, rotate: '0deg' },
+                { scale: 0.95, rotate: '5deg' },
+                { scale: 1, rotate: '0deg' },
+                { scale: 0.95, rotate: '5deg' },
+                { scale: 1, rotate: '0deg' },
+              ],
+              duration: 2500,
+            })
+
+            tl.add(
+              {
+                targets: [
+                  '#textSVG',
+                  '#logoSVG',
+                  'feTurbulence',
+                  'feDisplacement',
+                ],
+                baseFrequency: '0',
+                // numOctaves: 0,
+                fill: '#fff',
+              },
+              '-=1500'
+            )
+
+            tl.add(
+              {
+                targets: '#introSVG',
+                opacity: 0,
+                duration: 1500,
+                complete: function () {
+                  anime({
+                    targets: '.intro',
+                    opacity: 0,
+                    delay: 500, //1500
+                    duration: 500, //500
+                    complete: function (anim) {
+                      $('.intro').css('visibility', 'hidden')
+                      $('#introSVG').css('visibility', 'hidden')
+                      // Start Intro for Datepicker
+                      introJs()
+                        .setOptions({ doneLabel: 'Verstanden 😎' })
+                        .start()
+                    },
+                  })
+                },
+              },
+              '-=500'
+            )
           },
         })
       },
     })
+
+    animation
+      .add({
+        scale: 0.5,
+      })
+      .add({
+        letterSpacing: '10px',
+      })
+      .add({
+        scale: 1,
+      })
+      .add({
+        letterSpacing: '6px',
+      })
   } else {
     // Show content instantly and vanish Intro
     $('.intro').css('visibility', 'hidden')
@@ -100,6 +176,11 @@ $(document).ready(function () {
   $('#barRaceMenu').on('click', function () {
     window.location.replace(
       'barChartRace.html?page=' + getURLParameter('page')
+    )
+  })
+  $('#posterMenu').on('click', function () {
+    window.location.replace(
+      'poster.html?page=' + getURLParameter('page')
     )
   })
   $('#overviewMenu').on('click', function () {
@@ -171,8 +252,8 @@ function setContentBeginning() {
   var fromYear = 2013
   var endYear = 2019
 
-  $('#fromHeadline').html(fromYear)
-  $('#toHeadline').html(endYear)
+  $('#fromHeadline').html('(' + fromYear)
+  $('#toHeadline').html(endYear + ')')
 
   var yearsDifference = endYear - fromYear + 1
   if (yearsDifference == 0) yearsDifference = 1
@@ -236,8 +317,8 @@ function setContent(d) {
     if (fromYear <= endYear) {
       $('#from').removeClass('error-input')
       $('#end').removeClass('error-input')
-      $('#fromHeadline').html(fromYear)
-      $('#toHeadline').html(endYear)
+      $('#fromHeadline').html('(' + fromYear)
+      $('#toHeadline').html(endYear + ')')
 
       var yearsDifference = endYear - fromYear + 1
       if (yearsDifference == 0) yearsDifference = 1

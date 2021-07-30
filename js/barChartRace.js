@@ -8,11 +8,15 @@ $(document).ready(function () {
   })
 
   $('#dashboardMenu').on('click', function () {
-    if (document.referrer.includes('dashboard'))
-      window.location.replace(document.referrer)
-    else window.location.replace('dashboard.html')
+    window.location.replace(
+      'dashboard.html?page=' + getURLParameter('page')
+    )
   })
-
+  $('#posterMenu').on('click', function () {
+    window.location.replace(
+      'poster.html?page=' + getURLParameter('page')
+    )
+  })
   $('#overviewMenu').on('click', function () {
     window.location.replace('index.html')
   })

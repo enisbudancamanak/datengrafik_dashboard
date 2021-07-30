@@ -29,6 +29,16 @@ body {
   justify-content: center;
 }
 
+.intro .textHolderDiv {
+  position: absolute;
+}
+
+.intro .poster-text {
+  font-size: 2.5em;
+  color: white;
+  text-align: center;
+}
+
 .intro svg {
   visibility: hidden;
 }
