@@ -27,6 +27,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .intro .textHolderDiv {
@@ -45,10 +51,6 @@ body {
 
 h3 span {
   display: inline-block;
-}
-
-.intro svg {
-  visibility: hidden;
 }
 
 /* Sidebar Stuff */

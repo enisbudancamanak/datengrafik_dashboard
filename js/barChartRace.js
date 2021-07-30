@@ -22,26 +22,6 @@ $(document).ready(function () {
   })
 
   setHeadlineText(getURLParameter('page'))
-
-  const headlineTargets = new Letterize({
-    targets: '.headlineText',
-  })
-
-  for (var i = 0; i < headlineTargets.listAll.length; i++) {
-    headlineTargets.listAll[i].addEventListener(
-      'mouseover',
-      function (e) {
-        // console.log(e.target)
-
-        anime.timeline({ loop: 1 }).add({
-          targets: e.target,
-          scale: [1.5, 1],
-          duration: 900,
-          easing: 'spring(1, 200, 10, 0)',
-        })
-      }
-    )
-  }
 })
 
 function getURLParameter(parameter) {

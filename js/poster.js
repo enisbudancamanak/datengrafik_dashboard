@@ -39,8 +39,8 @@ function startPoster() {
   outroText.opacityIn = [0, 1]
   outroText.scaleIn = [0.2, 1]
   outroText.scaleOut = 3
-  outroText.durationIn = 800
-  outroText.durationOut = 600
+  outroText.durationIn = 500
+  outroText.durationOut = 350
   outroText.delay = 500
 
   // INTRO ANIMATION
@@ -55,13 +55,13 @@ function startPoster() {
       anime({
         targets: '.textHolderDiv',
         opacity: 0,
-        duration: 500,
+        duration: 400,
       })
       anime({
         targets: '#introSVG path',
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'cubicBezier(.5, .05, .1, .3)',
-        duration: 2500, //2500
+        duration: 1000, //2500
         direction: 'alternate',
         loop: false,
         delay: 500,
@@ -70,7 +70,7 @@ function startPoster() {
         },
         complete: function (anim) {
           let tl = anime.timeline({
-            duration: 4000,
+            duration: 3500,
             easing: 'easeInOutQuart',
           })
 
@@ -151,8 +151,8 @@ function startPoster() {
               anime({
                 targets: '.intro',
                 opacity: 0,
-                delay: 500, //1500
-                duration: 500, //500
+                delay: 500,
+                duration: 500,
                 complete: function (anim) {
                   $('.intro').css('visibility', 'hidden')
                   $('#introSVG').css('visibility', 'hidden')
@@ -173,14 +173,10 @@ function startPoster() {
     })
     .add({
       scale: 0.5,
-    })
-    .add({
       letterSpacing: '10px',
     })
     .add({
       scale: 1,
-    })
-    .add({
       letterSpacing: '6px',
     })
 }

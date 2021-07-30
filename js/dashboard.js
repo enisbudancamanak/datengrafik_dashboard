@@ -22,217 +22,8 @@ let indexOverviewChanged = false
 $(document).ready(function () {
   setHeadlineText(getURLParameter('page'))
 
-  if (
-    !document.referrer.includes('barChartRace') &&
-    !document.referrer.includes('index') &&
-    !document.referrer.includes('dashboard.html') &&
-    !document.referrer.includes('poster')
-  ) {
-    // exec the function for displaying the data with delay
-    setTimeout(function () {
-      changeDataBarChart(2013, 2019)
-    }, 4100) //4100
-
-    setTimeout(function () {
-      //TO Prevent Error while loading
-      if (allPieCharts[0].length == 0) {
-        location.replace(document.location)
-      }
-      setContentBeginning()
-      changeDataPieChart(allPieCharts[0])
-    }, 4300) //4300
-
-    const letters = new Letterize({
-      targets: '.poster-text',
-    })
-
-    var outroText = {}
-    outroText.opacityIn = [0, 1]
-    outroText.scaleIn = [0.2, 1]
-    outroText.scaleOut = 3
-    outroText.durationIn = 800
-    outroText.durationOut = 600
-    outroText.delay = 500
-
-    // INTRO ANIMATION
-    const animation = anime.timeline({
-      targets: letters.listAll,
-      delay: anime.stagger(15, {
-        grid: [letters.list[0].length, letters.list.length],
-        from: 'center',
-      }),
-      loop: false,
-      complete: function (anim) {
-        anime({
-          targets: '.textHolderDiv',
-          opacity: 0,
-          duration: 500,
-        })
-        anime({
-          targets: '#introSVG path',
-          strokeDashoffset: [anime.setDashoffset, 0],
-          easing: 'cubicBezier(.5, .05, .1, .3)',
-          duration: 2500, //2500
-          direction: 'alternate',
-          loop: false,
-          delay: 500,
-          begin: function (anim) {
-            $('#introSVG').css('visibility', 'visible')
-          },
-          complete: function (anim) {
-            let tl = anime.timeline({
-              duration: 4000,
-              easing: 'easeInOutQuart',
-            })
-
-            tl.add({
-              targets: '#logoSVG',
-              keyframes: [
-                { scale: 1, rotate: '0deg' },
-                { scale: 0.98, rotate: '2deg' },
-                { scale: 1, rotate: '0deg' },
-                { scale: 0.98, rotate: '2deg' },
-                { scale: 1, rotate: '0deg' },
-              ],
-              duration: 2500,
-            })
-
-            tl.add(
-              {
-                targets: [
-                  '#textSVG',
-                  '#logoSVG',
-                  'feTurbulence',
-                  'feDisplacement',
-                ],
-                baseFrequency: '0',
-                // numOctaves: 0,
-                fill: '#fff',
-              },
-              '-=1500'
-            )
-
-            tl.add(
-              {
-                targets: '#introSVG',
-                opacity: 0,
-                duration: 1500,
-              },
-              '-=500'
-            )
-            $('.poster-text').html(
-              'Internationaler Studiengang Medieninformatik B.Sc.'
-            )
-            tl.add(
-              {
-                targets: '.textHolderDiv',
-                opacity: outroText.opacityIn,
-                scale: outroText.scaleIn,
-                duration: outroText.durationIn,
-              },
-              '-=500'
-            )
-            tl.add({
-              targets: '.textHolderDiv',
-              opacity: 0,
-              scale: outroText.scaleOut,
-              duration: outroText.durationOut,
-              easing: 'easeInExpo',
-              delay: outroText.delay,
-              complete: function (anim) {
-                $('.poster-text').html(
-                  $('.headline h3').html() + ' von 2013 bis 2019'
-                )
-              },
-            })
-            tl.add({
-              targets: '.textHolderDiv',
-              opacity: outroText.opacityIn,
-              scale: outroText.scaleIn,
-              duration: outroText.durationIn,
-            })
-            tl.add({
-              targets: '.textHolderDiv',
-              opacity: 0,
-              scale: outroText.scaleOut,
-              duration: outroText.durationOut,
-              easing: 'easeInExpo',
-              delay: outroText.delay,
-              complete: function () {
-                anime({
-                  targets: '.intro',
-                  opacity: 0,
-                  delay: 500, //1500
-                  duration: 500, //500
-                  complete: function (anim) {
-                    $('.intro').css('visibility', 'hidden')
-                    $('#introSVG').css('visibility', 'hidden')
-
-                    reloadPage()
-                  },
-                })
-              },
-            })
-          },
-        })
-      },
-    })
-
-    animation
-      .add({
-        delay: 2000,
-      })
-      .add({
-        scale: 0.5,
-      })
-      .add({
-        letterSpacing: '10px',
-      })
-      .add({
-        scale: 1,
-      })
-      .add({
-        letterSpacing: '6px',
-      })
-  } else {
-    // Show content instantly and vanish Intro
-    $('.intro').css('visibility', 'hidden')
-    $('#introSVG').css('visibility', 'hidden')
-
-    setTimeout(function () {
-      changeDataBarChart(2013, 2019)
-    }, 0)
-
-    setTimeout(function () {
-      //TO Prevent Error while loading
-      if (allPieCharts[0].length == 0) {
-        location.replace(document.location)
-      }
-      changeDataPieChart(allPieCharts[0])
-      setContentBeginning()
-    }, 0)
-  }
-
-  // Touch Event on headline mouseover
-  const headlineTargets = new Letterize({
-    targets: 'h3',
-  })
-
-  for (var i = 0; i < headlineTargets.listAll.length; i++) {
-    headlineTargets.listAll[i].addEventListener(
-      'mouseover',
-      function (e) {
-        // console.log(e.target)
-
-        anime.timeline({ loop: 1 }).add({
-          targets: e.target,
-          scale: [1.5, 1],
-          duration: 900,
-          easing: 'spring(1, 200, 10, 0)',
-        })
-      }
-    )
-  }
+  // ANIMATION AND DASHBOARD DATA LOADING
+  introToDashboard()
 
   //HANDLING SIDEBAR MENUPOINTS
   $('.icon-text').on('click', function (menuPoint) {
@@ -495,6 +286,84 @@ function createDataArrays(dataArray) {
     allPieCharts[i] = tempObject
     i += 1
   })
+}
+
+function introToDashboard() {
+  if (
+    !document.referrer.includes('barChartRace') &&
+    !document.referrer.includes('poster')
+  ) {
+    $('.poster-text').html(
+      $('.headline h3').html() + '<br> (2013 bis 2019)'
+    )
+
+    var outroText = {}
+    outroText.opacityIn = [0, 1]
+    outroText.scaleIn = [0, 0.9]
+    outroText.scaleOut = 3
+    outroText.durationIn = 900
+    outroText.durationOut = 450
+    outroText.delay = 200
+
+    let tl = anime.timeline({
+      duration: 4000,
+      easing: 'easeInOutQuart',
+    })
+
+    tl.add({
+      targets: '.textHolderDiv',
+      opacity: outroText.opacityIn,
+      scale: outroText.scaleIn,
+      duration: outroText.durationIn,
+    })
+    tl.add({
+      targets: '.textHolderDiv',
+      opacity: 0,
+      scale: outroText.scaleOut,
+      duration: outroText.durationOut,
+      easing: 'easeInExpo',
+      delay: outroText.delay,
+      complete: function () {
+        setTimeout(function () {
+          changeDataBarChart(2013, 2019)
+        }, 0)
+
+        setTimeout(function () {
+          //TO Prevent Error while loading
+          if (allPieCharts[0].length == 0) {
+            location.replace(document.location)
+          }
+          changeDataPieChart(allPieCharts[0])
+          setContentBeginning()
+        }, 0)
+        anime({
+          targets: '.intro',
+          opacity: 0,
+          delay: 200,
+          duration: 500,
+          complete: function (anim) {
+            $('.intro').css('visibility', 'hidden')
+            $('#introSVG').css('visibility', 'hidden')
+          },
+        })
+      },
+    })
+  } else {
+    setTimeout(function () {
+      changeDataBarChart(2013, 2019)
+    }, 0)
+
+    setTimeout(function () {
+      //TO Prevent Error while loading
+      if (allPieCharts[0].length == 0) {
+        location.replace(document.location)
+      }
+      changeDataPieChart(allPieCharts[0])
+      setContentBeginning()
+    }, 0)
+    $('.intro').css('visibility', 'hidden')
+    $('#introSVG').css('visibility', 'hidden')
+  }
 }
 
 function setHeadlineText(parameter) {
