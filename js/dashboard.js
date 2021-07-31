@@ -293,9 +293,7 @@ function introToDashboard() {
     !document.referrer.includes('barChartRace') &&
     !document.referrer.includes('poster')
   ) {
-    $('.poster-text').html(
-      $('.headline h3').html() + '<br> (2013 bis 2019)'
-    )
+    $('.poster-text').html($('.headline h3').html())
 
     var outroText = {}
     outroText.opacityIn = [0, 1]
