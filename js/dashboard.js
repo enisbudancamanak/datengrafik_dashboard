@@ -342,6 +342,13 @@ function introToDashboard() {
           complete: function (anim) {
             $('.intro').css('visibility', 'hidden')
             $('#introSVG').css('visibility', 'hidden')
+
+            if (!document.referrer.includes('index.html')) {
+              // START INTRO
+              introJs()
+                .setOptions({ doneLabel: 'Verstanden 😎' })
+                .start()
+            }
           },
         })
       },
